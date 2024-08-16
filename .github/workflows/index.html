@@ -1,43 +1,42 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta Regresiva</title>
+</head>
+<body>
+    <h1>Cuenta Regresiva para apaganding...</h1>
+    <div >
+        <h2 id="countdown"> </h2>
+    </div>
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+    <script>
+        // Define la fecha y hora objetivo (en este caso, el próximo año)
+        const targetDate = new Date("January 1, 2025 00:00:00").getTime();
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+        // Actualiza el temporizador cada segundo
+        const countdownFunction = () => {
+            const now = new Date().getTime(); // Obtén la hora actual
+            const distance = targetDate - now; // Calcula la diferencia en milisegundos
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+            // Calcula minutos y segundos restantes
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+            // Muestra los resultados en el elemento con id "countdown"
+            document.getElementById("countdown").innerHTML = `${minutes}m ${seconds}s`;
 
-jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+            // Si la cuenta regresiva ha terminado, muestra un mensaje
+            if (distance < 0) {
+                clearInterval(countdownInterval); // Detén el temporizador
+                document.getElementById("countdown").innerHTML = "¡Tiempo agotado!";
+            }
+        };
+
+        // Llama a la función para inicializar el temporizador y luego actualízalo cada segundo
+        countdownFunction();
+        const countdownInterval = setInterval(countdownFunction, 1000);
+    </script>
+</body>
+</html>
