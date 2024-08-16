@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta Regresiva</title>
+</head>
+<body>
+    <h1>Cuenta Regresiva para apaganding...</h1>
+    <div >
+        <h2 id="countdown"> </h2>
+    </div>
+
+    <script>
+        // Define la fecha y hora objetivo (en este caso, el próximo año)
+        const targetDate = new Date("January 1, 2025 00:00:00").getTime();
+
+        // Actualiza el temporizador cada segundo
+        const countdownFunction = () => {
+            const now = new Date().getTime(); // Obtén la hora actual
+            const distance = targetDate - now; // Calcula la diferencia en milisegundos
+
+            // Calcula minutos y segundos restantes
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Muestra los resultados en el elemento con id "countdown"
+            document.getElementById("countdown").innerHTML = `${minutes}m ${seconds}s`;
+
+            // Si la cuenta regresiva ha terminado, muestra un mensaje
+            if (distance < 0) {
+                clearInterval(countdownInterval); // Detén el temporizador
+                document.getElementById("countdown").innerHTML = "¡Tiempo agotado!";
+            }
+        };
+
+        // Llama a la función para inicializar el temporizador y luego actualízalo cada segundo
+        countdownFunction();
+        const countdownInterval = setInterval(countdownFunction, 1000);
+    </script>
+</body>
+</html>
